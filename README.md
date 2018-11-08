@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/mtumilowicz/java9-stream.svg?branch=master)](https://travis-ci.com/mtumilowicz/java9-stream)
+
 # java9-stream
 Overview of Java 9 Stream API news.
 
