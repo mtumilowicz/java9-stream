@@ -36,12 +36,12 @@ class StreamTest extends Specification {
                 .collect(Collectors.joining())
 
         then:
-        joined == ""
+        joined == ''
     }
 
     def 'ofNullable with not null list'() {
         given:
-        List<String> strings = ["a", "b", "c"]
+        List<String> strings = ['a', 'b', 'c']
 
         when:
         String joined = Stream.ofNullable(strings)
@@ -49,7 +49,7 @@ class StreamTest extends Specification {
                 .collect(Collectors.joining())
 
         then:
-        joined == "abc"
+        joined == 'abc'
     }
 
     def 'of with null list'() {
@@ -84,7 +84,7 @@ class StreamTest extends Specification {
                 .stream()
                 .collect(Collectors.groupingBy({ it.getYear() },
                         Collectors.filtering({ it.getAmount() > 1_000 }, Collectors.toList())
-                ));
+                ))
 
         then: 'filter then map produces only non empty entries'
         usingFilter.size() == 1
@@ -109,7 +109,7 @@ class StreamTest extends Specification {
                 .stream()
                 .collect(Collectors.groupingBy({ it.getYear() },
                         Collectors.flatMapping({ it.getTags().stream() }, Collectors.toSet())
-                ));
+                ))
 
         then: 'tags year by year in a map'
         tagsByYear.size() == 2
