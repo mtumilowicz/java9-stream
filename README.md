@@ -1,12 +1,17 @@
 [![Build Status](https://travis-ci.com/mtumilowicz/java9-stream.svg?branch=master)](https://travis-ci.com/mtumilowicz/java9-stream)
 
 # java9-stream
-Overview of Java 9 Stream API news.
+* [Java 9 and Beyond by Venkat Subramaniam](https://www.youtube.com/watch?v=oRcOiGWK9Ts)
 
 # preface
 New methods:
 
 * `default Stream<T> takeWhile(Predicate<? super T> predicate)`
+   ```
+   IntStream.iterate(0, i -> i + 3) // for(int i = 0;; i = i + 3)
+   .takeWhile(i -> i <= 20)         //   if (i > 20) break
+   .forEach(System.out::println)    //   System.out.println(i)
+   ```
 * `default Stream<T> dropWhile(Predicate<? super T> predicate)`
 * `public static<T> Stream<T> ofNullable(T t)`
     * suppose we have function:
@@ -39,6 +44,7 @@ New methods:
          assertThat(joined, is(""));       
         ```
 * `public static<T> Stream<T> iterate(T seed, Predicate<? super T> hasNext, UnaryOperator<T> next)`
+    * equivalent of `for(seed; Predicate; Function)`, example: `for(int i = 0; i < 10; i = i + 3)`
     * old iterate method does not have stop function:
         ```
         public static<T> Stream<T> iterate(final T seed, final UnaryOperator<T> f)
