@@ -77,7 +77,7 @@ class StreamTest extends Specification {
                         Collectors.filtering({ it.getAmount() > 1_000 }, Collectors.toList())
                 ));
 
-        then: 'filter then map produces only one entry'
+        then: 'filter then map produces only non empty entries'
         usingFilter.size() == 1
         usingFilter[2016] == [new Expense(1_500, 2016, [Tag.UTILITY])]
 
@@ -102,7 +102,7 @@ class StreamTest extends Specification {
                         Collectors.flatMapping({ it.getTags().stream() }, Collectors.toSet())
                 ));
 
-        then:
+        then: 'tags year by year in a map'
         tagsByYear.size() == 2
         tagsByYear[2016] == [Tag.FOOD, Tag.UTILITY, Tag.ENTERTAINMENT] as Set
         tagsByYear[2015] == [Tag.TRAVEL, Tag.FOOD] as Set
