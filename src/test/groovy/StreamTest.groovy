@@ -30,30 +30,39 @@ class StreamTest extends Specification {
         given:
         List<String> strings = null
 
+        when:
         String joined = Stream.ofNullable(strings)
                 .flatMap { it.stream() }
                 .collect(Collectors.joining())
 
-        expect:
+        then:
         joined == ""
     }
 
     def 'ofNullable with not null list'() {
+        given:
         List<String> strings = ["a", "b", "c"]
 
+        when:
         String joined = Stream.ofNullable(strings)
                 .flatMap { it.stream() }
                 .collect(Collectors.joining())
 
+        then:
         joined == "abc"
     }
 
     def 'of with null list'() {
+        given:
         List<String> strings = null
 
+        when:
         Stream.of(strings)
                 .flatMap { it.stream() }
                 .forEach { println it }
+
+        then:
+        thrown(NullPointerException)
     }
 
     def 'filtering'() {
