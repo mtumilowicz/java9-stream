@@ -26,7 +26,7 @@ class StreamTest extends Specification {
         ints == [10, 11, 12, 13, 14]
     }
 
-    def 'ofNullable_null'() {
+    def 'ofNullable with null list'() {
         given:
         List<String> strings = null
 
@@ -38,7 +38,7 @@ class StreamTest extends Specification {
         joined == ""
     }
 
-    def 'ofNullable_notNull'() {
+    def 'ofNullable with not null list'() {
         List<String> strings = ["a", "b", "c"]
 
         String joined = Stream.ofNullable(strings)
@@ -48,8 +48,8 @@ class StreamTest extends Specification {
         joined == "abc"
     }
 
-    def 'of_null'() {
-        List<String> strings = null;
+    def 'of with null list'() {
+        List<String> strings = null
 
         Stream.of(strings)
                 .flatMap { it.stream() }
@@ -64,26 +64,27 @@ class StreamTest extends Specification {
                 new Expense(700, 2015, [Tag.TRAVEL, Tag.ENTERTAINMENT])
         ]
 
-        when: '(filter then map)'
+        when: 'filter then map'
         Map<Integer, List<Expense>> usingFilter = expenses
                 .stream()
                 .filter { it.getAmount() > 1_000 }
                 .collect(Collectors.groupingBy({ it.getYear() }))
 
-        and: '(map then filter)'
+        and: 'map then filter'
         Map<Integer, List<Expense>> usingFiltering = expenses
                 .stream()
                 .collect(Collectors.groupingBy({ it.getYear() },
                         Collectors.filtering({ it.getAmount() > 1_000 }, Collectors.toList())
                 ));
 
-        then:
+        then: 'filter then map produces only one entry'
         usingFilter.size() == 1
-        usingFilter.get(2016) == [new Expense(1_500, 2016, [Tag.UTILITY])]
-        and:
+        usingFilter[2016] == [new Expense(1_500, 2016, [Tag.UTILITY])]
+
+        and: 'map then filter produces all entries, and some are empty'
         usingFiltering.size() == 2
-        usingFiltering.get(2016) == [new Expense(1_500, 2016, [Tag.UTILITY])]
-        usingFiltering.get(2015) == []
+        usingFiltering[2016] == [new Expense(1_500, 2016, [Tag.UTILITY])]
+        usingFiltering[2015] == []
     }
 
     def 'flatMapping'() {
@@ -94,17 +95,17 @@ class StreamTest extends Specification {
                 new Expense(700, 2015, [Tag.TRAVEL, Tag.FOOD])
         ]
 
-//        when
+        when:
         Map<Integer, Set<Tag>> tagsByYear = expenses
                 .stream()
                 .collect(Collectors.groupingBy({ it.getYear() },
                         Collectors.flatMapping({ it.getTags().stream() }, Collectors.toSet())
                 ));
 
-//        then
+        then:
         tagsByYear.size() == 2
-        tagsByYear.get(2016) == [Tag.FOOD, Tag.UTILITY, Tag.ENTERTAINMENT] as Set
-        tagsByYear.get(2015) == [Tag.TRAVEL, Tag.FOOD] as Set
+        tagsByYear[2016] == [Tag.FOOD, Tag.UTILITY, Tag.ENTERTAINMENT] as Set
+        tagsByYear[2015] == [Tag.TRAVEL, Tag.FOOD] as Set
     }
 
 }
