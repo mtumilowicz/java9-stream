@@ -3,6 +3,7 @@ import org.junit.Test;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -89,5 +90,26 @@ public class StreamTest {
         assertThat(usingFiltering.size(), is(2));
         assertThat(usingFiltering.get(2016), is(List.of(new Expense(1_500, 2016, List.of(Tag.UTILITY)))));
         assertThat(usingFiltering.get(2015), is(List.of()));
+    }
+
+    @Test
+    public void flatMapping() {
+//        given
+        List<Expense> expenses = List.of(
+                new Expense(500, 2016, List.of(Tag.FOOD, Tag.ENTERTAINMENT)),
+                new Expense(1_500, 2016, List.of(Tag.UTILITY)),
+                new Expense(700, 2015, List.of(Tag.TRAVEL, Tag.FOOD)));
+
+//        when
+        Map<Integer, Set<Tag>> tagsByYear = expenses
+                .stream()
+                .collect(Collectors.groupingBy(Expense::getYear,
+                        Collectors.flatMapping(expense -> expense.getTags().stream(), Collectors.toSet())
+                ));
+
+//        then
+        assertThat(tagsByYear.size(), is(2));
+        assertThat(tagsByYear.get(2016), is(Set.of(Tag.FOOD, Tag.UTILITY, Tag.ENTERTAINMENT)));
+        assertThat(tagsByYear.get(2015), is(Set.of(Tag.TRAVEL, Tag.FOOD)));
     }
 }
