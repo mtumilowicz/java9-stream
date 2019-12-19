@@ -2,6 +2,7 @@
 
 # java9-stream
 * [Java 9 and Beyond by Venkat Subramaniam](https://www.youtube.com/watch?v=oRcOiGWK9Ts)
+* https://www.codingame.com/playgrounds/46649/java-9-improvements/collectors-improvements
 
 # preface
 New methods:
@@ -57,7 +58,5 @@ New methods:
         ```
         Stream.iterate(0, x -> x < 10, x -> ++x)...
         ```
-
-
 # project description
 Test for above mentioned methods.
