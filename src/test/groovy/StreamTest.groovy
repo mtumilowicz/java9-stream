@@ -107,5 +107,4 @@ class StreamTest extends Specification {
         tagsByYear[2016] == [Tag.FOOD, Tag.UTILITY, Tag.ENTERTAINMENT] as Set
         tagsByYear[2015] == [Tag.TRAVEL, Tag.FOOD] as Set
     }
-
 }
